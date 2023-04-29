@@ -15,17 +15,44 @@
             * {
                 font-family: 'Montserrat', sans-serif;
             }  
+
+            #hits::-webkit-scrollbar-track
+            {
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+                background-color: #000;
+                border-radius: 5px;
+            }
+
+            #hits::-webkit-scrollbar
+            {
+                height: 6px;
+                background-color: #000;
+            }
+
+            #hits::-webkit-scrollbar-thumb
+            {
+                border-radius: 5px;
+                background-color: #FFF;
+                background-image: -webkit-gradient(linear,
+                                                40% 0%,
+                                                75% 84%,
+                                                from(#0ea5e9),
+                                                to(#1d4ed8),
+                                                color-stop(.6,#1d4ed8))
+            }
+          
         </style>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <div class="font-sans text-white antialiased bg-gray-900">
-            <div class="py-12">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">            
+        <div class="font-sans text-white antialiased bg-gray-900 min-h-screen">
+            <div class="py-2">
+                <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">            
                     {{ $slot }}
                 </div>
             </div>
+            
         </div>
         @livewireScripts        
     </body>
