@@ -40,15 +40,26 @@
                                                 to(#1d4ed8),
                                                 color-stop(.6,#1d4ed8))
             }
-          
+
+            /* Chrome, Safari, Edge, Opera */
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+            }
+
+            /* Firefox */
+            input[type=number] {
+            -moz-appearance: textfield;
+            }
         </style>
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        <div class="font-sans text-white antialiased bg-gray-900 min-h-screen">
+        <div class="font-sans text-white antialiased bg-gray-900 min-h-screen flex items-center justify-center">
             <div class="py-2">
-                <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">            
+                <div class="max-w-7xl mx-auto px-10 lg:px-8">            
                     {{ $slot }}
                 </div>
             </div>
