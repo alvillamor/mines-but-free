@@ -44,7 +44,7 @@
                         class="absolute top-0 left-0 h-full w-full z-10  px-14 py-20 box-border">
                         <div class="bg-opacity-70 bg-black h-full w-full rounded-lg flex justify-center gap-y-3 flex-col items-center">
                             <div class="font-bold text-lg uppercase" x-text="data.status"></div>
-                            <div class="font-bold text-3xl uppercase" :class="data.color" x-text="data.reward"></div>
+                            <div class="font-bold text-3xl" :class="data.color" x-text="data.reward"></div>
                             <div class="font-bold text-lg uppercase" x-text="data.cashout"></div>
                         </div>
                     </div>
@@ -71,9 +71,11 @@
                             <x-mystery.image.diamond class="w-7" />
                         </div>
                         <div class="shrink-1 flex flex-col items-center justify-center">
-                            <input {{ $gameStart == true ? 'disabled' : '' }} wire:model="bet" class="disabled:text-gray-600 bg-gray-800 text-center text-sm font-black border-0 w-full pl-2 pr-5 justify-center py-0 focus:ring-0" type="number" />
-                            <div class="text-gray-500 text-xs pl-2 pr-5">{{ $money }}</div>
+                            <input {{ $gameStart == true ? 'disabled' : '' }} wire:model="bet" class="disabled:text-gray-600 bg-gray-800 text-center text-sm font-black border-0 w-full pl-2 pr-7 justify-center py-0 focus:ring-0" type="number" />
+                            <div class="text-gray-500 text-xs pl-2 pr-7">{{ $money }}</div>
                         </div>
+                        <div wire:click="min" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg top-2 right-1 py-1 px-2">Min</div>                        
+                        <div wire:click="max" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg bottom-2 right-1 py-1 px-2">Max</div>
                     </div>
                     <div class="w-28 rounded-lg overflow-hidden">
                         @if($gameStart == false)
@@ -112,7 +114,10 @@
 
             @this.on('reload', () => {
                 new Audio("{{ asset('effects/reload.mp3')}} ").play();       
-            })                        
+            })    
+            @this.on('cashout', () => {
+                new Audio("{{ asset('effects/cashout.mpeg')}} ").play();       
+            })                                  
         });
     </script>    
 </div>

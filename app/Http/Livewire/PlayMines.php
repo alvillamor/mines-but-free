@@ -76,13 +76,11 @@ class PlayMines extends Component
             $this->bet = $this->money;
             return;
         }     
-        
+
         if($value > 20000) {
             $this->bet = 20000;
             return;
         }        
-
-   
 
     }
 
@@ -102,7 +100,15 @@ class PlayMines extends Component
     {
         return number_format($this->cashout);
     }
- 
+
+    public function max()
+    {
+        $this->bet = $this->money;
+    }
+     public function min()
+    {
+        $this->bet = 1;
+    }
     public function bet()
     {
         $this->dispatchBrowserEvent('close');
@@ -115,6 +121,7 @@ class PlayMines extends Component
     public function cashout()
     {
         $this->gameStart = false;
+        $this->gameOver = true;
         $data['status'] = "win";
         $data['reward'] = $this->rewards[$this->mineCount][count($this->openedBox)] . "x";
         $data['cashout'] = "+ " .$this->getFormattedCashout();
@@ -122,6 +129,7 @@ class PlayMines extends Component
         $this->dispatchBrowserEvent('notify', $data);
         $this->money = $this->money + $this->cashout;
         $this->cashout = 0;
+        $this->emit('cashout');        
     }
 
     public function recharge()
