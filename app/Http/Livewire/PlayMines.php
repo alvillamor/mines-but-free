@@ -72,16 +72,17 @@ class PlayMines extends Component
             $this->bet = 10;
             return;
         }
-
+        if($value > $this->money) {
+            $this->bet = $this->money;
+            return;
+        }     
+        
         if($value > 20000) {
             $this->bet = 20000;
             return;
         }        
 
-        if($value > $this->money) {
-            $this->bet = $this->money;
-            return;
-        }        
+   
 
     }
 
