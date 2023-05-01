@@ -2,9 +2,9 @@
     <div class="flex justify-center gap-x-8">
             <div class="max-w-sm w-full">
                 <div class="flex justify-between gap-x-4 mb-1">
-                    <h3 class="font-bold text-[2rem] text-center flex items-center justify-center gap-x-2">
+                    <h3 class="font-bold sm:text-[2rem] text-[1.75rem] text-center flex items-center justify-center gap-x-2">
                         <span class="block text-red-600 drop-shadow-[0px_0px_1px_#991b1b]">MINES</span> 
-                        <span class="text-3xl drop-shadow-[0_3px_0px_1px_#991b1b]">BUT</span>
+                        <span class="sm:text-3xl text-xl drop-shadow-[0_3px_0px_1px_#991b1b]">BUT</span>
                         <span class="block text-green-400 drop-shadow-[0px_0px_1px_#15803d]">FREE</span>
                     </h3>
                     <div class="flex items-center">

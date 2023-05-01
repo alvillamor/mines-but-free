@@ -56,10 +56,10 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body>
-        <div class="font-sans text-white antialiased bg-gray-900 min-h-screen flex items-center justify-center">
-            <div class="py-2">
-                <div class="max-w-7xl mx-auto px-10 lg:px-8">            
+    <body class="bg-gray-900 min-h-screen">
+        <div class="font-sans text-white antialiased flex items-center justify-center">
+            <div class="py-3 px-4 lg:px-8 w-full">
+                <div class="max-w-7xl mx-auto">            
                     {{ $slot }}
                 </div>
             </div>
