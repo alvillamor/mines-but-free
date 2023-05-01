@@ -123,8 +123,18 @@ class PlayMines extends Component
             return;
         }        
 
-        $this->bet = number_format($value);
+        $this->bet = (int) $value;
 
+    }
+
+    public function formatMoney()
+    {
+        return number_format($this->money);
+    }
+
+    public function formatCashout()
+    {
+        return number_format($this->cashout);
     }
 
     public function mount()
@@ -208,7 +218,7 @@ class PlayMines extends Component
             return false;
         }
 
-        $this->cashout = number_format($this->bet * $this->rewards[$this->mineCount][count($this->openedBox)]);
+        $this->cashout = $this->bet * $this->rewards[$this->mineCount][count($this->openedBox)];
         $this->emit('openDiamond', count($this->openedBox));
         return true;    
 

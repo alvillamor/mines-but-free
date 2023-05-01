@@ -12,7 +12,7 @@
                             <div class="mr-1 w-6">
                                 <x-mystery.image.diamond />
                             </div>
-                            <div>{{ $money }}</div>
+                            <div>{{ $this->formatMoney() }}</div>
                         </div>                    
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                         </div>
                         <div class="shrink-1 flex flex-col items-center justify-center">
                             <input {{ $gameStart == true ? 'disabled' : '' }} wire:model.lazy="bet" class="disabled:text-gray-600 bg-gray-800 text-center text-sm font-black border-0 w-full pl-2 pr-10 justify-center py-0 focus:ring-0" type="number" />
-                            <div class="text-gray-500 text-xs pl-2 pr-10">{{ $money }}</div>
+                            <div class="text-gray-500 text-xs pl-2 pr-10">{{ $this->formatMoney() }}</div>
                         </div>
                         <button wire:click="min" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg top-2 right-1 py-1 px-2">Min</button>                        
                         <button wire:click="max" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg bottom-2 right-1 py-1 px-2">Max</button>
@@ -87,7 +87,7 @@
                         @else
                             <button wire:click="cashout" {{ $cashout == 0 ? 'disabled' : '' }} class="disabled:bg-gray-600 bg-blue-600 disabled:cursor-not-allowed w-full h-full cursor-pointer text-center flex flex-col gap-y-0 text-md items-center justify-center">
                                 <div class="font-bold">Cashout</div>
-                                <div class="text-xs">{{ $cashout }}</div>
+                                <div class="text-xs">{{ $this->formatCashout() }}</div>
                             </button>                        
                         @endif
                     </div>
