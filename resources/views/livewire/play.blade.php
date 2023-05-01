@@ -51,8 +51,8 @@
                 </div>
                 <div id="hits" class="flex mb-5 gap-x-5 overflow-y-auto pb-2">
                     @foreach($rewards[$mineCount] as $hits => $reward)
-                        <div id="hits{{ $hits }}" class="rounded-lg overflow-hidden border-2 {{ count($openedBox) == $hits && !$gameOver ? 'border-green-600 shadow-xl' : ($gameOver && count($openedBox) -1 == $hits ? 'border-red-600' : 'border-gray-600')  }} text-center w-20 shrink-0">
-                            <div class="{{ count($openedBox) == $hits && !$gameOver ? 'bg-green-800' : ($gameOver && count($openedBox) -1 == $hits ? 'bg-red-800' : 'bg-gray-800')   }} font-black">{{ $reward }}x</div>
+                        <div id="hits{{ $hits }}" class="rounded-lg overflow-hidden border-2 {{ (count($openedBox) == $hits && !$gameOver) || (count($openedBox) == $hits && $gameStatus == "win") ? 'border-green-600 shadow-xl' : ($gameStatus == "lose" && count($openedBox) -1 == $hits ? 'border-red-600' : 'border-gray-600')  }} text-center w-20 shrink-0">
+                            <div class="{{ (count($openedBox) == $hits && !$gameOver) || (count($openedBox) == $hits && $gameStatus == "win") ? 'bg-green-800' :  ($gameStatus == "lose" && count($openedBox)  -1 == $hits ? 'bg-red-800' : 'bg-gray-800')   }} font-black">{{ $reward }}x</div>
                             <div>{{ $hits }} hits</div>
                         </div>                        
                     @endforeach                                           
@@ -115,7 +115,8 @@
             })
 
             @this.on('reload', () => {
-                new Audio("{{ asset('effects/reload.mp3')}} ").play();       
+                new Audio("{{ asset('effects/reload.mp3')}} ").play();    
+                document.getElementById('hits1').scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });                         
             })    
             @this.on('cashout', () => {
                 new Audio("{{ asset('effects/cashout.mpeg')}} ").play();       

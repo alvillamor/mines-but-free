@@ -6,7 +6,7 @@ use Livewire\Component;
 
 use function PHPUnit\Framework\isFalse;
 
-class PlayMines extends Component
+class Play extends Component
 {
     public $money = 1000;
     public $mines;
@@ -17,6 +17,7 @@ class PlayMines extends Component
     public $gameOver = false;
     public $bet = 10;
     public $gameOverCount = 0;
+    public $gameStatus;
 
     public $rewards = [
         '4'=> [
@@ -113,17 +114,12 @@ class PlayMines extends Component
             $this->bet = 10;
             return;
         }
-        if($value > $this->money) {
-            $this->bet = $this->money;
-            return;
-        }     
 
-        if($value > 20000) {
+        if($value > 20000 && $this->money > 20000) {
             $this->bet = 20000;
-            return;
-        }        
-
-        $this->bet = (int) $value;
+        } elseif($value > 20000 ) {
+            $this->bet = $this->money;
+        }
 
     }
 
@@ -149,8 +145,8 @@ class PlayMines extends Component
         if($this->gameStart) {
             return false;
         }
-
-        $this->bet = $this->money;
+        
+        $this->bet = $this->money > 20000 ? 20000 : $this->money;
     }
 
     public function min()
@@ -163,6 +159,7 @@ class PlayMines extends Component
     }
     public function bet()
     {
+        $this->gameStatus = null;
         $this->dispatchBrowserEvent('close');
         if($this->money > 0) {
             $this->money -= $this->bet;
@@ -172,6 +169,7 @@ class PlayMines extends Component
 
     public function cashout()
     {
+        $this->gameStatus = "win";
         $this->gameStart = false;
         $this->gameOver = true;
         $data['status'] = "win";
@@ -226,6 +224,7 @@ class PlayMines extends Component
 
     public function gameOver()
     {
+        $this->gameStatus = "lose";
         $this->gameOver = true;
         $this->gameStart = false;
         $this->gameOverCount++;
@@ -246,6 +245,6 @@ class PlayMines extends Component
 
     public function render()
     {
-        return view('livewire.play-mines');
+        return view('livewire.play');
     }
 }

@@ -1,5 +1,5 @@
 <x-guest-layout>
 
-    <livewire:play-mines />
+    <livewire:play />
 
 </x-guest-layout>
