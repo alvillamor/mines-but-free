@@ -74,10 +74,10 @@
                             <input {{ $gameStart == true ? 'disabled' : '' }} wire:model="bet" class="disabled:text-gray-600 bg-gray-800 text-center text-sm font-black border-0 w-full pl-2 pr-7 justify-center py-0 focus:ring-0" type="number" />
                             <div class="text-gray-500 text-xs pl-2 pr-7">{{ $money }}</div>
                         </div>
-                        <div wire:click="min" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg top-2 right-1 py-1 px-2">Min</div>                        
-                        <div wire:click="max" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg bottom-2 right-1 py-1 px-2">Max</div>
+                        <button wire:click="min" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg top-2 right-1 py-1 px-2">Min</button>                        
+                        <button wire:click="max" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg bottom-2 right-1 py-1 px-2">Max</button>
                     </div>
-                    <div class="w-28 rounded-lg overflow-hidden">
+                    <div class="sm:w-28 w-20 rounded-lg overflow-hidden shrink-0">
                         @if($gameStart == false)
                             <button wire:click="bet" class="w-full h-full cursor-pointer bg-red-600 text-center font-bold flex text-md items-center justify-center">
                                 Bet
