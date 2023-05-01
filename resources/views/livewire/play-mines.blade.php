@@ -12,7 +12,7 @@
                             <div class="mr-1 w-6">
                                 <x-mystery.image.diamond />
                             </div>
-                            <div>{{ $this->getFormattedMoney() }}</div>
+                            <div>{{ $money }}</div>
                         </div>                    
                     </div>
                 </div>
@@ -61,9 +61,11 @@
                 <div class="flex gap-x-2 overflow-y-auto pb-2 items-stretch h-20">
                     <div class="relative flex items-center">
                         <x-mystery.image.mine class="w-7 m-2 absolute z-10" />
+                    
                         <select {{ $gameStart == true ? 'disabled' : '' }} wire:model="mineCount" class="disabled:text-gray-600 bg-gray-800 font-bold h-full border-red-800 text-gray-200 pl-12 pr-8 align-right rounded-lg border-2 text-sm focus:ring-0 focus:border-red-800 ">
-                            <option>4</option>
-                            <option>5</option>
+                            @foreach($rewards as $index => $reward)
+                                <option>{{ $index }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="bg-gray-800 grow rounded-lg border border-gray-600 relative flex overflow-hidden items-center">
@@ -71,8 +73,8 @@
                             <x-mystery.image.diamond class="w-7" />
                         </div>
                         <div class="shrink-1 flex flex-col items-center justify-center">
-                            <input {{ $gameStart == true ? 'disabled' : '' }} wire:model="bet" class="disabled:text-gray-600 bg-gray-800 text-center text-sm font-black border-0 w-full pl-2 pr-7 justify-center py-0 focus:ring-0" type="number" />
-                            <div class="text-gray-500 text-xs pl-2 pr-7">{{ $money }}</div>
+                            <input {{ $gameStart == true ? 'disabled' : '' }} wire:model.lazy="bet" class="disabled:text-gray-600 bg-gray-800 text-center text-sm font-black border-0 w-full pl-2 pr-10 justify-center py-0 focus:ring-0" type="number" />
+                            <div class="text-gray-500 text-xs pl-2 pr-10">{{ $money }}</div>
                         </div>
                         <button wire:click="min" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg top-2 right-1 py-1 px-2">Min</button>                        
                         <button wire:click="max" class="w-10 text-center cursor-pointer absolute uppercase text-gray-400 bg-gray-900 text-[.6rem] rounded-lg bottom-2 right-1 py-1 px-2">Max</button>
@@ -85,7 +87,7 @@
                         @else
                             <button wire:click="cashout" {{ $cashout == 0 ? 'disabled' : '' }} class="disabled:bg-gray-600 bg-blue-600 disabled:cursor-not-allowed w-full h-full cursor-pointer text-center flex flex-col gap-y-0 text-md items-center justify-center">
                                 <div class="font-bold">Cashout</div>
-                                <div class="text-xs">{{ $this->getFormattedCashout() }}</div>
+                                <div class="text-xs">{{ $cashout }}</div>
                             </button>                        
                         @endif
                     </div>
@@ -94,7 +96,7 @@
     </div>
     <p class="mt-1 text-center">
         @if($money == 0 && $gameOver == true)
-            No more gold. <span class="cursor-pointer underline" wire:click="recharge()">Recharge another 1,000!</span>   
+            No more gold. <span class="cursor-pointer underline" wire:click="recharge()">Recharge another {{ 1000 * $gameOverCount }}!</span>   
         @elseif($money > 5000)
             You're on fire! Try your luck with <span class="text-green-600">real money</span> <a target="_blank" href="https://www.pesowin.xyz/c-ViXcYCRz?lang=en" class="underline">here</a>.
         @else

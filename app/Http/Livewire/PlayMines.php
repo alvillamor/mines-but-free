@@ -16,6 +16,7 @@ class PlayMines extends Component
     public $gameStart = false;
     public $gameOver = false;
     public $bet = 10;
+    public $gameOverCount = 0;
 
     public $rewards = [
         '4'=> [
@@ -62,9 +63,49 @@ class PlayMines extends Component
             '18' => '2400',
             '19' => '8410',
             '20' => '50470',           
-        ]        
-
-        ];
+        ],
+        '6'=> [
+            '1' => '1.25',
+            '2' => '1.66',
+            '3' => '2.25',
+            '4' => '3.1',
+            '5' => '4.34',
+            '6' => '6.2',
+            '7' => '9.06',
+            '8' => '13.59',
+            '9' => '21',
+            '10' => '33.61',
+            '11' => '56.02',
+            '12' => '98.04',
+            '13' => '182.08',
+            '14' => '364.16',
+            '15' => '801.17',
+            '16' => '2000',
+            '17' => '6001',
+            '18' => '24004',
+            '19' => '168000'         
+        ],
+        '7'=> [
+            '1' => '1.31',
+            '2' => '1.86',
+            '3' => '2.67',
+            '4' => '3.92',
+            '5' => '5.89',
+            '6' => '9.06',
+            '7' => '14.34',
+            '8' => '23.48',
+            '9' => '39.91',
+            '10' => '70.9',
+            '11' => '133.06',
+            '12' => '266.12',
+            '13' => '576.59',
+            '14' => '1380',
+            '15' => '3810',
+            '16' => '12690',
+            '17' => '57080',
+            '18' => '457000',      
+        ]                
+    ];
 
     public function updatedBet($value)
     {
@@ -82,6 +123,8 @@ class PlayMines extends Component
             return;
         }        
 
+        $this->bet = number_format($value);
+
     }
 
     public function mount()
@@ -91,22 +134,21 @@ class PlayMines extends Component
         $this->mines = array_slice($numbers, 0, $this->mineCount);
     }
 
-    public function getFormattedMoney()
-    {
-        return number_format($this->money);
-    }
-
-    public function getFormattedCashout()
-    {
-        return number_format($this->cashout);
-    }
-
     public function max()
     {
+        if($this->gameStart) {
+            return false;
+        }
+
         $this->bet = $this->money;
     }
-     public function min()
+
+    public function min()
     {
+        if($this->gameStart) {
+            return false;
+        }
+                
         $this->bet = 1;
     }
     public function bet()
@@ -124,7 +166,7 @@ class PlayMines extends Component
         $this->gameOver = true;
         $data['status'] = "win";
         $data['reward'] = $this->rewards[$this->mineCount][count($this->openedBox)] . "x";
-        $data['cashout'] = "+ " .$this->getFormattedCashout();
+        $data['cashout'] = "+ " . $this->cashout;
         $data['color'] = 'text-green-500';
         $this->dispatchBrowserEvent('notify', $data);
         $this->money = $this->money + $this->cashout;
@@ -134,8 +176,12 @@ class PlayMines extends Component
 
     public function recharge()
     {
-        $this->money = 1000;
+        $this->dispatchBrowserEvent('close');        
+        $this->money = 1000 * $this->gameOverCount;
         $this->bet = 10;
+        $this->openedBox = [];
+        $this->gameStart = false;
+        $this->gameOver = false;        
     }
     public function reload()
     {
@@ -162,7 +208,7 @@ class PlayMines extends Component
             return false;
         }
 
-        $this->cashout = $this->bet * $this->rewards[$this->mineCount][count($this->openedBox)];
+        $this->cashout = number_format($this->bet * $this->rewards[$this->mineCount][count($this->openedBox)]);
         $this->emit('openDiamond', count($this->openedBox));
         return true;    
 
@@ -172,6 +218,7 @@ class PlayMines extends Component
     {
         $this->gameOver = true;
         $this->gameStart = false;
+        $this->gameOverCount++;
         $this->emit('gameOver');
         
         if($this->bet > $this->money) {
