@@ -3,12 +3,19 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-
-use function PHPUnit\Framework\isFalse;
+use App\Models\Record;
+use Faker\Generator as Faker;
 
 class Play extends Component
 {
     public $money = 1000;
+
+    public $name;
+    public $avatarIndex;    
+    public $avatarList = [
+        'red.png', 'blue.png', 'invoker.webp', 'bounty.webp', 'alchemist.png', 'techies.png'
+    ];
+    
     public $mines;
     public $cashout = 0;
     public $openedBox = [];
@@ -108,6 +115,16 @@ class Play extends Component
         ]                
     ];
 
+    public function mount(Faker $faker)
+    {
+        $this->name = $faker->firstName;
+        $this->avatarIndex = rand(0, count($this->avatarList) - 1);
+
+        $numbers = range(1, 25);
+        shuffle($numbers);
+        $this->mines = array_slice($numbers, 0, $this->mineCount);        
+    }
+
     public function updatedBet($value)
     {
         if($value < 1) {
@@ -131,13 +148,6 @@ class Play extends Component
     public function formatCashout()
     {
         return number_format($this->cashout);
-    }
-
-    public function mount()
-    {
-        $numbers = range(1, 25);
-        shuffle($numbers);
-        $this->mines = array_slice($numbers, 0, $this->mineCount);
     }
 
     public function max()
@@ -172,10 +182,23 @@ class Play extends Component
         $this->gameStatus = "win";
         $this->gameStart = false;
         $this->gameOver = true;
+        
         $data['status'] = "win";
         $data['reward'] = $this->rewards[$this->mineCount][count($this->openedBox)] . "x";
         $data['cashout'] = "+ " . $this->cashout;
         $data['color'] = 'text-green-500';
+
+        Record::create([
+            'name' => $this->name,
+            'status' => $this->gameStatus,
+            'avatar' => $this->avatarList[$this->avatarIndex],
+            'cashout' => $this->cashout,
+            'multiplier' => $this->rewards[$this->mineCount][count($this->openedBox)],      
+            'bet' => $this->bet,
+        ]);
+
+        $this->emitTo('records', '$refresh');
+                
         $this->dispatchBrowserEvent('notify', $data);
         $this->money = $this->money + $this->cashout;
         $this->cashout = 0;
@@ -222,6 +245,15 @@ class Play extends Component
 
     }
 
+
+    public function changeAvatar()
+    {
+        $this->avatarIndex++;
+        if($this->avatarIndex >= count($this->avatarList)) {
+            $this->avatarIndex = 0;
+        }
+    }
+
     public function gameOver()
     {
         $this->gameStatus = "lose";
@@ -229,6 +261,17 @@ class Play extends Component
         $this->gameStart = false;
         $this->gameOverCount++;
         $this->emit('gameOver');
+        
+        Record::create([
+            'name' => $this->name,
+            'status' => $this->gameStatus,
+            'avatar' => $this->avatarList[$this->avatarIndex],
+            'cashout' => 0,
+            'multiplier' => $this->rewards[$this->mineCount][count($this->openedBox)],
+            'bet' => $this->bet,
+        ]);
+
+        $this->emitTo('records', '$refresh');
         
         if($this->bet > $this->money) {
             $this->bet = $this->money;
